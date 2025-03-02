@@ -1,0 +1,132 @@
+.flex{
+    display: flex;
+    gap: 5px;
+}
+.checkout .h1{
+    color: #111;
+    font-size: 2em;
+    margin-bottom: 1.5em;
+    font-weight: bold;
+}
+.checkout .checkout__container{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2em;
+}
+.checkout .checkout__container .col-left{
+    flex-basis: calc(100% / 2 - 3em);
+}
+.checkout .checkout__container hr{
+    flex-basis: 1px;
+}
+.checkout .col-left .form input{
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px 10px;
+    border: none;
+    outline: none;
+    background: #f7f6fe;
+    border-radius: 3px;
+}
+.checkout .col-left .form label{
+    font-size: 14px;
+    margin-left: 5px;
+}
+.checkout .col-left .form .flex{
+    align-items: center;
+    height: 20px;
+
+}
+.checkout .col-left .form .flex input[type="checkbox"]{
+    width: 15px;
+    height: 15px;
+    margin-top: 18px;
+}
+.checkout .col-left .form .flex input[type="checkbox"] + span{
+    font-size: 14px;
+    color: #777;
+}
+.checkout .col-left .form .flex input[type="checkbox"]:checked + span{
+    color: #111;
+}
+.checkout .col-right{
+    flex-basis: calc(100% / 2 - 2em);
+}
+.checkout .col-right .row{
+    display: flex;
+    gap: 2.5em;
+    padding: 10px;
+    justify-content: center;
+    flex-direction: column;
+}
+.checkout .col-right .row .box{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+.checkout .col-right .row .box p{
+    font-size: 16px;
+}
+.checkout .col-right .row .bg{
+    position: relative;
+    background: rgb(243, 243, 255);
+    border-radius: 3px;
+    /* overflow: hidden; */
+}
+.checkout .col-right .row .bg .coupon_name{
+    position: absolute;
+    left: 5px;
+    bottom: -24px;
+    font-size: 10px;
+    padding: 5px 10px;
+    background: rgb(218, 255, 218);
+    color: green;
+    cursor: pointer;
+}
+.checkout .col-right .row .box input[type="text"]{
+    width: 100%;
+    padding: 12px 10px;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+.checkout .col-right .row .box input[type="radio"]{
+    width: 30px;
+    height: 30px;
+    background: red;
+}
+.checkout .col-right .row .box input[type="radio"]:checked+label{
+    color: blue;
+}
+.checkout .col-right .row .box .col label{
+    font-size: 14px;
+    padding-top: 3px;
+    cursor: pointer;
+}
+.checkout .col-right .row .box .col input{
+    padding: 8px;
+    border-radius: 50%;
+    background: #999;
+    box-shadow: inset 0 0 5px #222,0,0 1px #1111;
+
+}
+.checkout .col-right .row .box .product-image{
+    width: 70px ;height: 50px;
+    padding: 0 10px;
+}
+.checkout .col-right .row .box .payment-img{
+    width: 150px ;height: 20px;
+}
+.checkout .bg button{
+    border-radius: 0 3px 3px 0;
+    height: 100%;
+}
+
+@media (max-width:650px){
+    .checkout .checkout__container .col-left,
+    .checkout .checkout__container .col-right{
+        flex-basis: 100%;
+    }
+}

@@ -1,0 +1,41 @@
+.shop{
+    padding-top: 90px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(238, 238, 255);
+}
+.shop form{
+    margin-bottom: 40px;
+}
+.shop .search-heading{
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+.shop .search{
+    width: 80vmin;
+    height: 40px;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    padding: 0 10px;
+    background: #ffffff;
+}
+.shop .search-box{
+    user-select: none;
+    width: 80vmin;
+    max-height: 200px;
+    overflow-x: auto;
+    border-radius: 3px;
+    background-color: #fff;
+}
+.shop .search-box .category{
+    padding: 5px 10px;
+    margin-bottom: 2px;
+    background: rgb(244, 230, 232);
+}
+.shop .search-box .category:hover{
+    background: pink;
+    cursor: pointer;
+}

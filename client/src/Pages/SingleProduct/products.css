@@ -1,0 +1,316 @@
+
+.products{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5em;
+    flex-wrap: wrap;
+    min-height: 100vh;
+    --input-skin :#ebeffd;
+    --black-font:#222;
+    --white-font : #fff;
+    --button-skin :linear-gradient(to right , red,rgb(231, 1, 150));
+}
+.products .col-left .images{
+    flex: 1 1 60px;
+}
+.products .col-left .images .box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    padding: 10px;
+    margin-bottom: 5px;
+    background: var(--input-skin);
+    cursor: pointer;
+}
+.products .col-left .images .box img{
+    max-width: 100%;
+    max-height: 100%;
+    mix-blend-mode: multiply;
+}
+.products .col-left .images .box img:hover{
+    scale: 1.04;
+}
+.products .col-middle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: calc(50% - 7.5em);
+    background: var(--input-skin);
+    padding: 30px;
+    max-height: 500px;
+    height: 500px;
+    border-radius: 5px;
+}
+.products .col-middle img{
+    max-width: 100%;
+    max-height: 500px;
+    mix-blend-mode: multiply;
+}
+.products .col-right{
+    flex-basis: calc(40% - 1.5em);
+}
+.col-right .products-detail{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+.col-right .products-detail .ratting{
+    font-size: 16px;
+}
+.col-right h1{
+    font-size: 20px;
+    font-weight: 500;
+}
+.col-right .price{
+    font-size: 16px;
+    font-weight: 400;
+}
+.col-right .price span{
+    margin-right: 10px;
+}
+.col-right .color .title,
+.col-right .size .title{
+    font-size: 16px;
+    color: #222;
+}
+.col-right .color .value label{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #858585dd;
+}
+input[type = "radio"]{
+    display: none;
+}
+.col-right .color{
+    display: flex;
+    gap: 10px;
+    user-select: none;
+}
+.col-right .color .value{
+    display: flex;
+    gap: 5px;
+}
+.col-right .color .value label:hover,
+.col-right .color .value input[type = "radio"]:checked + label{
+    box-shadow: 0 0 0 2px #111;
+    border: none;
+}
+.col-right .size{
+    user-select: none;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.col-right .size .value{
+    display: flex;
+    gap: 5px;
+}
+.col-right .size .value label{
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 3px;
+    background: var(--white-font);
+    color: var(--black-font);
+    border:  1px solid var(--black-font);
+}
+.col-right .size .value label:hover,
+.col-right .size .value input[type = "radio"]:checked + label{
+    background: var(--button-skin);
+    color: var(--white-font);
+    border:  1px solid var(--white-font);
+}
+.col-right .btn-section{
+    display: flex;
+    gap: 20px;
+    height: 30px;
+    cursor: pointer;
+    user-select: none;
+}
+.col-right .btn-section .quanity{
+    user-select: none;
+    display: flex;
+    width: 120px;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 2px;
+    border: 1px solid #222;
+}
+.col-right .btn-section .quanity .count{
+    width: 60px;
+    height: 100%;
+    text-align: center;
+    line-height: 30px;
+    font-size: 12px;
+}
+.col-right .btn-section .quanity button{
+    cursor: pointer;
+    color: #444;
+    width: 35px;
+    outline: none;
+    background: #dddddd;
+    line-height: 0;
+    font-size: 16px;
+    border-radius: 0;
+}
+.col-right .btn-section .quanity button:hover,
+.col-right .btn-section .quanity button.active{
+    background: var(--button-skin);
+    color: #fff;
+}
+.col-right .buy-now-btn{
+    display: flex;
+    height: 100%;
+    gap: 5px;
+    width: 100%;
+}
+.col-right .buy-now-btn a{
+    padding: 10px 20px;
+    height: 100%;
+    text-decoration: none;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    background: var(--button-skin);
+    z-index: 200;
+    border-radius: 3px;
+}
+.col-right .buy-now-btn a:hover{
+    background: green;
+    }
+.col-right .btn-section span{
+    width: 30px;
+    height: 100%;
+    line-height: 30px;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 20px;
+    border: 1px solid #222;
+}
+.col-right .delivery{
+    cursor: pointer;
+    margin-top: 30px;
+    border: 1px solid #444;
+    border-radius: 5px;
+}
+.col-right .delivery .litle-flex{
+    padding: 20px;
+}
+.col-right .delivery .return-delivery{
+    border-top: 1px solid #444;
+}
+.col-right .delivery i{
+    font-size: 25px;
+    color: #444;
+}
+.col-right .delivery .content h3{
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.col-right .delivery .content p{
+    font-size: 14px;
+    color: #444;
+}
+
+/* Product details  */
+.container {
+    position: relative;
+    display: flex;
+    gap: 1em;
+    flex-direction: column;
+    width: 100%;
+    height: 200px;
+    padding:10px 20px;
+    border-radius: 3px;
+    box-shadow: 0 0 2px #333;
+}
+.tab{
+    /* position: fixed; */
+    display: flex;
+    user-select: none;
+}
+.tab .tab-name{
+    padding: 10px 14px;
+    border: 1px solid #999;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.tab .tab-name:hover{
+    background: #dddddd;
+}
+::-webkit-scrollbar-button{
+    background: red;
+}
+.tab-content{
+    overflow-x: auto;
+}
+.tab-content p{
+    font-size: 16px;
+    color: #555;
+    text-align: justify;
+}
+
+
+@media (max-width:1000px){
+    .products .col-left{
+        flex-basis: 10%;
+    }
+    .products .col-middle{
+        flex-basis: 80%;
+    }
+    .products .col-right{
+        flex-basis: 100%;
+    }
+}
+
+@media only screen and (max-width:650px){
+    /* single products  */
+    .products{
+        height: 100%;
+        flex-direction: column;
+    }
+    .products .swiper {
+        max-width: 100%;
+        width: 350px;
+        height: 450px;
+        background: #e4ecff;
+      }  
+      .products .swiper-slide{
+        padding:70px 20px;
+      }
+      .products .swiper-slide .image{
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      .products .swiper-slide img {
+        position: relative;
+        max-width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        max-height: 100%;
+        mix-blend-mode: multiply;
+      }
+    .products .col-left{
+        flex-basis: 100%;
+    }
+    .products .col-middle{
+        display: none;
+    }
+    .products .col-right{
+        padding: 0;
+        margin: 0;
+        flex-basis: 100%;
+    }
+
+}
