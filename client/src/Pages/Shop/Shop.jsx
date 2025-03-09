@@ -5,7 +5,7 @@ import './shop.css'
 function Shop() {
   const [query,setQuery] = useState('');
   const [API,setAPI] = useState('');
-  const [productName,setProductName] = useState(null);
+  const [productName,setProductName] = useState([]);
   const [caching,setCaching] = useState({});
  
   const handleSubmit = (e)=>{
@@ -31,15 +31,19 @@ function Shop() {
     }
   }
 
-  const getProducrName = async()=>{
-    const response = await fetch(`https://dummyjson.com/products?limit=200`);
-    const data = await response.json();
-    setProductName(data.products);
+  const getProductName = async()=>{
+    try {
+      const response = await fetch(`https://dummyjson.com/products?limit=200`);
+      const data = await response.json();
+      setProductName(data.products);
+    } catch (error) {
+      // console.log(error);
+    }
   }
 
   useEffect(()=>{
     const timer = setTimeout(() => {
-      getProducrName()
+      getProductName()
     }, 300);
     return ()=>{clearTimeout(timer)}
   },[])

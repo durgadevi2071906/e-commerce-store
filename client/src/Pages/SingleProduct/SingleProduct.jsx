@@ -2,17 +2,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './products.css';
 import { toast } from 'react-toastify';
-import { useAuth } from '../../Context/AuthContext'
 import {Ratting,Review,Description} from '../../Component/ActiveTab';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Slider from '../../Component/Slider';
 import ReletiveProduct from '../../Component/ReletiveProduct';
 import PreLoader from '../../Component/Preloader/PreLoader';
 import { useCarts } from '../../Context/Carts';
+import useAuthStore from '../../Context/AuthStore';
 
 
 function SingleProduct() {
   const navigate = useNavigate();
+  const {Token} = useAuthStore();
   const imageElement = useRef();
   const [count,setCount] = useState(1);
   const [product, setProduct] = useState({});
@@ -20,9 +21,9 @@ function SingleProduct() {
   let { id } = useParams();
   const [color,setColor] = useState('')
   const [size,setSize] = useState('')
-  const {user,token} = useAuth();
+
   const {carts,setCarts} = useCarts();
-  const [checkout,setCheckout] = useState({name :'',image:'',price:''});
+  const [checkout,setCheckout] = useState({name :'',image:'',price:'',quanity:''});
   let check = carts.filter(item => item.product_id === product.id);
 
   useEffect(()=>{
@@ -31,10 +32,10 @@ function SingleProduct() {
 
   const AddtoCart = (e)=>{
     e.preventDefault();
-    if(token){
+    if(Token){
       if(check.length < 1){
         setCarts([...carts , {
-          user_id : user.id ? user.id : '',
+          user_id : Token.user.id ? Token.user.id : '',
           product_id : product.id ? product.id : '',
           image : product.thumbnail ? product.thumbnail : '',
           price : product.price ? product.price : '',
@@ -85,10 +86,10 @@ function SingleProduct() {
 
   const BuyNow = (e)=>{
     e.preventDefault();
-    if(token){
+    if(Token){
       localStorage.setItem('checkout',JSON.stringify(checkout));
-      setCheckout({name:product.title,image:product.thumbnail,price:product.price});
-      navigate('/product/checkout');
+      setCheckout({name:product.title,image:product.thumbnail,price:product.price,quanity:count});
+      navigate('/user/checkout');
     }else{
       toast.info('You are login first.', {
         position: "top-right",

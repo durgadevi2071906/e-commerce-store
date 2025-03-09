@@ -1,52 +1,67 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './order.css'
+import {Link} from 'react-router-dom'
+import axios from 'axios';
+import Cookies from 'js-cookie'
+import useAuthStore from '../../Context/AuthStore';
+
 
 function Order() {
+  const {Token} = useAuthStore();
+    const [order,setOrder] = useState([]);
+    const APIURL = `https://api.gurhatech.online/v1/${Token.user && Token.user.id}/order` ;
+
+    const getOrder = async(APIURL)=>{
+        try {
+            const res = await axios.get(APIURL, {
+              headers: {
+                'X-XSRF-Token': Cookies.get('XSRF-TOKEN'),
+                'Authorization': `Bearer ${Token.token}`,
+              }
+            });
+            const data = res.data;
+            if (data.status) {
+                setOrder(data.order);
+            }
+          } catch (error) {
+             console.log(error)
+          }
+    }
+
+    useEffect(()=>{
+        getOrder(APIURL);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[APIURL])
   return (
     <>
-    <section className="cart hero">
+    <section className="cart">
+        <div className="table-wrapper">
         <table>
             <thead>
                 <tr>
                     <th>Product</th>
                     <th>Price</th>
-                    <th>Size</th>
-                    <th>Color</th>
                     <th>Quanity</th>
                     <th>Image</th>
-                    <th>Action</th>
+                    <th>status</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Shoes</td>
-                    <td>$199</td>
-                    <td>Large</td>
-                    <td>White</td>
-                    <td>1</td>
-                    <td style={{ maxHeight:'60px' }}><img style={{ maxWidth:'50px',maxHeight:'100%' }} src="https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" /></td>
-                    <td style={{ cursor:'pointer',color:'red' }}><i className='fa-solid fa-trash'></i></td>
+               {
+                order && order.map((item,i) => (
+                    <tr key={i}>
+                    <td>{item.name}</td>
+                    <td>${item.price}</td>
+                    {/* <td>Large</td> */}
+                    <td>{item.quanity}</td>
+                    <td style={{ maxHeight: '60px' }}><Link to={`/product/${item.order_id}`}><img style={{ maxWidth: '50px', maxHeight: '100%' }} src={item.image} alt="" /></Link></td>
+                    <td style={{ color : item.payment_status === 'paid' ? 'green' : 'red' } }>{item.payment_status}</td>
                 </tr>
-                <tr>
-                    <td>Shoes</td>
-                    <td>$199</td>
-                    <td>Large</td>
-                    <td>White</td>
-                    <td>1</td>
-                    <td style={{ maxHeight:'60px' }}><img style={{ maxWidth:'50px',maxHeight:'100%' }} src="https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" /></td>
-                    <td style={{ cursor:'pointer',color:'red' }}><i className='fa-solid fa-trash'></i></td>
-                </tr>
-                <tr>
-                    <td>Shoes</td>
-                    <td>$199</td>
-                    <td>Large</td>
-                    <td>White</td>
-                    <td>1</td>
-                    <td style={{ maxHeight:'60px' }}><img style={{ maxWidth:'50px',maxHeight:'100%' }} src="https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" /></td>
-                    <td style={{ cursor:'pointer',color:'red' }}><i className='fa-solid fa-trash'></i></td>
-                </tr>
+                ))
+               }
             </tbody>
         </table>
+        </div>
     </section>
     </>
   )

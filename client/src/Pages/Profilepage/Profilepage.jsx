@@ -1,23 +1,21 @@
 import React, {  useState } from 'react'
 import './profile.css'
 import Edit from '../../Assest/Image/edit.png'
-import { useAuth } from '../../Context/AuthContext'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify';
 import ProfileModel from '../../Component/Profile/ProfileModel'
+import useAuthStore from '../../Context/AuthStore'
 
 function Profilepage() {
-    const { user } = useAuth()
+    const {Token,updateToken} =useAuthStore();
     const [profileModel,setProfileModel] = useState(false);
     const [uploadImg,setUploadImg] = useState('');
     const [isloding,setIsloding] = useState(false);
     const [image,setImage] =useState('')
     const [errors,setErrors] = useState({});
-    const [profile, setProfile] = useState(user);
+    const [profile, setProfile] = useState(Token.user ? Token.user : {name:'',email:'',user_id:'',dob:'',number:'',bio:'',avatar:Token.user.avatar});
     const [password_reset,setPassword_reset] = useState({current_password : '',new_password : '',confirm_password: ''});
-
-    console.log('profile render')
 
     const handleChange = (event) => {
         setProfile((prev) => ({ ...prev, [event.target.name]: event.target.value }))
@@ -26,8 +24,8 @@ function Profilepage() {
         e.preventDefault();
         try {
             setIsloding(true)
-            const res = await axios.post('http://localhost:8000/v1/user/profile/edit',{
-                user_id : user.id,
+            const res = await axios.post('https://api.gurhatech.online/v1/user/profile/edit',{
+                user_id : Token.user.id,
                 email: profile.email,
                 name: profile.name,
                 dob: profile.dob,
@@ -37,13 +35,14 @@ function Profilepage() {
             headers : {
                 'Content-Type': 'application/json',
                 'X-XSRF-Token' : Cookies.get('XSRF-TOKEN'),
-                'Authorization' : `Bearer ${Cookies.get('token')}`
+                'Authorization' : `Bearer ${Token.token}`
             }
             })
             const data = await res.data ;
             if(data.status){
                 setErrors({});
                 setIsloding(false);
+                updateToken(profile);
                 toast.success(data.message, {
                     position: "top-right",
                     autoClose: 5000,
@@ -75,11 +74,11 @@ function Profilepage() {
         e.preventDefault();
         try {
             setIsloding(true)
-            const res = await axios.post('http://localhost:8000/v1/user/password-reset',password_reset,{
+            const res = await axios.post('https://api.gurhatech.online/v1/user/password-reset',password_reset,{
             headers : {
                 'Content-Type': 'application/json',
                 'X-XSRF-Token' : Cookies.get('XSRF-TOKEN'),
-                'Authorization' : `Bearer ${Cookies.get('token')}`
+                'Authorization' : `Bearer ${Token.token}`
             }
             })
             const data = await res.data ;
@@ -112,9 +111,9 @@ function Profilepage() {
                 <div className="image">
                     <input onChange={ImageUpload} accept='image/*' type="file" id='avatar' hidden/>
                     <label htmlFor="avatar"><img className='pencil' src={Edit} alt='' /></label>
-                    {user && user.avatar ? <img src={'https://api.gurhatech.online/public/user/'+user.avatar} alt="" /> : <img src='https://api.gurhatech.online/public/user/UIMG2025030167c34c22498ab.jpg' alt=''/>}
+                    {Token.user && Token.user.avatar ? <img src={'https://api.gurhatech.online/public/user/'+Token.user.avatar} alt="" /> : <img src='https://api.gurhatech.online/public/user/UIMG2025030167c34c22498ab.jpg' alt=''/>}
                 </div>
-                {profileModel && <div className='profile-wrapper'><ProfileModel setImage={setImage} uploadImg={uploadImg} setProfileModel={setProfileModel} avatar={user.avatar && user.avatar} image={image}/></div>}
+                {profileModel && <div className='profile-wrapper'><ProfileModel setProfile={setProfile} profile={profile} setImage={setImage} uploadImg={uploadImg} setProfileModel={setProfileModel} avatar={Token.user.avatar && Token.user.avatar} image={image}/></div>}
                 <form onSubmit={profileSubmit} className='form'>
                     <div className="form-control">
                         <label>Name</label><br />

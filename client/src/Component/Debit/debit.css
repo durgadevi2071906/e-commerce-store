@@ -1,0 +1,57 @@
+#card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-direction: column;
+}
+#card .card{
+    max-width: 350px;
+    width: 100%;
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    justify-content: center;
+    background: rgba(216, 219, 219, 0.1);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+}
+#card .card .row{
+    padding: 15px 0;
+    width: 100%;
+}
+#card .card .row label{
+    color: #fff;
+}
+#card .card .row .input-field1{
+    width: 50%;
+}
+#card .card .row .box{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+}
+#card .card .row .box img{
+    width: 100px;
+    margin-right: 5px;
+    margin-top: 5px;
+    height: 20px;
+}
+#card .card .row .input{
+    background: rgb(34, 24, 144);
+    border: 1px solid #fff;
+    padding: 10px 5px;
+    height: 40px;
+}
+#cc-number{
+    border: none;
+    background: transparent;
+}
+.error{
+    color: red;
+    font-size: 16px;
+    padding-left: 5px;
+    font-weight: bold;
+}

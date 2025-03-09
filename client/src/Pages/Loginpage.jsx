@@ -1,16 +1,53 @@
 import React, { useState } from 'react'
-import {useAuth} from '../Context/AuthContext';
-import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import useAuthStore from '../Context/AuthStore';
 
 function Loginpage() {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    const {rerrors,login,isLoding} = useAuth()
-    const handlelogin = (event) =>{
-        event.preventDefault();
-        login(email,password);
-    }
+    const [isLoding, setIsLoding] = useState(false);
+    const [rerrors,setRerrors] = useState({})
+    const {setToken} = useAuthStore();
+    const navigate = useNavigate()
 
+  
+    const handlelogin = async(event) =>{
+        event.preventDefault();
+        try {
+          setIsLoding(true);
+          await axios.get('https://api.gurhatech.online/sanctum/csrf-cookie')
+          const res = await axios.post("https://api.gurhatech.online/v1/signin", { email: email, password: password }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-XSRF-Token': Cookies.get('XSRF-TOKEN'),
+            }
+          });
+          const data = await res.data;
+          if (data.status) {
+            setIsLoding(false);
+            setToken(data);
+            toast.success(data.message,
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
+            navigate('/')
+          }
+        } catch (err) {
+          setIsLoding(false);
+          const data = err.response.data;
+          setRerrors(data.errors)
+        }
+    }
 
   return (
     <section style={{ paddingTop:'90px' }} className='login'>

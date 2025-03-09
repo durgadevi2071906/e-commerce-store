@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
-import { useAuth } from '../Context/AuthContext';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import Cookies from 'js-cookie'
+import useAuthStore from '../Context/AuthStore';
 
 function Registerpage() {
-  const { token, errors, register, isLoding } = useAuth()
+  const [errors, setErrors] = useState({})
+  const {setToken} = useAuthStore();
+  const navigate = useNavigate();
+  const [isLoding, setIsLoding] = useState(false);
   const [userRegiterData, setUserRegisteData] = useState({
     name: '',
     email: '',
@@ -17,10 +23,37 @@ function Registerpage() {
 
   const handleregister = async (event) => {
     event.preventDefault();
-    register(userRegiterData);
-  }
-  if (token) {
-    // return navigate('/')
+    try {
+      setIsLoding(true);
+      await axios.get('https://api.gurhatech.online/sanctum/csrf-cookie')
+      const res = await axios.post("https://api.gurhatech.online/v1/signup", userRegiterData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-XSRF-Token': Cookies.get('XSRF-TOKEN')
+        }
+      });
+      const data = await res.data;
+      if (data.status) {
+        setIsLoding(false);
+        setToken(data);
+        toast.success(data.message,
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        navigate('/')
+      }
+    } catch (err) {
+      setIsLoding(false);
+      const data = err.response.data;
+      setErrors(data.errors)
+    }
   }
 
   return (

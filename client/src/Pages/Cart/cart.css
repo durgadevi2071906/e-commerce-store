@@ -1,3 +1,6 @@
+.cart{
+    padding-top: 90px;
+}
 .cart table{
     width: 100%;
 }
@@ -16,6 +19,13 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+}
+.cart .table-wrapper{
+    width: 100%;
+    overflow-x: auto;
+}
+.cart table{
+    width: 100%;
 }
 .cart table thead{
     background: #dd44ee;

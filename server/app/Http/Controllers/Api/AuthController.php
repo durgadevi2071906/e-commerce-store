@@ -46,7 +46,7 @@ class AuthController extends Controller
             if($user){
                 return response()->json([
                     'status' => true,
-                    'token' => Auth::user()->createToken('API Token')->plainTextToken,
+                    'token' => $saved->createToken('API Token')->plainTextToken,
                     'token_type' => 'bearer',
                     'message' => 'You are registered successfully.',
                     'user' => Auth::user(),
@@ -87,7 +87,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'You are logged in successfully.',
-                'token' => Auth::user()->createToken('API Token')->plainTextToken,
+                'token' => $request->user()->createToken('API Token')->plainTextToken,
                 'token_type' => 'bearer',
                 'user' => Auth::user(),
             ], 200);
@@ -100,11 +100,10 @@ class AuthController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         try {
-            $user = Auth::user();
-            $user->tokens()->delete();
+            $request->user()->tokens()->delete();
             Auth::logout();
             return response()->json([
                 'status' => true,

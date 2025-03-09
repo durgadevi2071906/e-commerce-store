@@ -2,12 +2,22 @@
 import React, {  useEffect,  useState } from 'react'
 import './checkout.css'
 import PaymentImg from '../../Assest/Image/pay-icon.png'
+// import Debitcard from '../../Component/Debit/Debitcard'
+import axios from 'axios'
+import Cookies from 'js-cookie'
 // import IMG from '../../Assest/Image/image 57.png'
 import Coupon from '../../Component/Coupon'
+import {toast} from 'react-toastify'
+import useAuthStore from '../../Context/AuthStore'
+
 
 function Checkout() {
+    const {Token} = useAuthStore();
     const [coupon,setCoupon] = useState('');
+    const [isloding,setLoding] = useState(false);
+    const [error,setError] = useState('');
     const [couponInput,setCouponInput] = useState('');
+    // const [cardModel,setCardModel] = useState(false);
     const [input,setInput] = useState({
         name : '',
         company_name : '',
@@ -19,6 +29,7 @@ function Checkout() {
         payment_type : '',
         saved_address : '',
     });
+
     const handaleRadioChange =(e) =>{
         setInput(prev => ({...prev,payment_type :e.target.value }));
     }
@@ -45,10 +56,39 @@ function Checkout() {
         setCheckout(JSON.parse(storedata))
        }
     },[])
+    console.log(error)
     // Order Place ======================
-    const OrderPlace = (e) =>{
+    const OrderPlace =async (e) =>{
         e.preventDefault();
-        console.log(input);
+        try {
+            setLoding(true)
+            if(!input.name === '') setError('All field required.')
+
+            const res = await axios.post('https://api.gurhatech.online/v1/session',{user_id:Token.user.id,name:checkout.name,price:checkout.price,quanity:checkout.quanity,images:checkout.image}, {
+              headers: {
+                'Content-Type': 'application/json',
+                'X-XSRF-Token': Cookies.get('XSRF-TOKEN'),
+                'Authorization': `Bearer ${Token.token}`,
+              }
+            });
+            const data = res.data;
+            if (data.status) {
+                setLoding(false)
+                window.location.href = data.session.url ;
+            }
+          } catch (error) {
+            setLoding(false)
+            toast.error(error.response.data.message,{
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            })
+          }
     }
     const OrderPlaceEnter = (e) =>{
         if(e.key === "Enter"){
@@ -73,31 +113,31 @@ function Checkout() {
                 <div className='form'>
                     <div className="input-box">
                         <label>Your Name:</label><br/>
-                        <input onChange={handaleChange} value={input.name} name='name' type="text" placeholder="Enter Your Name"/>
+                        <input onChange={handaleChange} value={input.name} name='name' type="text" placeholder="Enter Your Name" required />
                     </div>
                     <div className="input-box">
                         <label>Company Name:</label><br/>
-                        <input onChange={handaleChange} value={input.company_name} name='company_name' type="text" placeholder="Company Name"/>
+                        <input onChange={handaleChange} value={input.company_name} name='company_name' type="text" placeholder="Company Name" required />
                     </div>
                     <div className="input-box">
                         <label>Street Address:</label><br/>
-                        <input onChange={handaleChange} value={input.street} name='street' type="text" placeholder="Street Address"/>
+                        <input onChange={handaleChange} value={input.street} name='street' type="text" placeholder="Street Address" required />
                     </div>
                     <div className="input-box">
                         <label>Apartment, floor, etc. (optional):</label><br/>
-                        <input onChange={handaleChange} value={input.apartment} name='apartment' type="text" placeholder="" />
+                        <input onChange={handaleChange} value={input.apartment} name='apartment' type="text" placeholder=""  />
                     </div>
                     <div className="input-box">
                         <label>Town/City:</label><br/>
-                        <input onChange={handaleChange} value={input.city} name='city' type="text" placeholder="Town/City" />
+                        <input onChange={handaleChange} value={input.city} name='city' type="text" placeholder="Town/City" required/>
                     </div>
                     <div className="input-box">
                         <label>Phone Number:</label><br/>
-                        <input onChange={handaleChange} value={input.phone_number} name='phone_number' type="text" placeholder="Phone Number"/>
+                        <input onChange={handaleChange} value={input.phone_number} name='phone_number' type="text" placeholder="Phone Number" required/>
                     </div>
                     <div className="input-box">
                         <label>Email Address*:</label><br/>
-                        <input onChange={handaleChange} value={input.email} name='email' type="text" placeholder="Email Address*" />
+                        <input onChange={handaleChange} value={input.email} name='email' type="text" placeholder="Email Address*" required />
                     </div>
                     <div className="flex">
                         <input onChange={(e) => setInput(prev => ({...prev,saved_address :e.target.value}))} checked={input.saved_address.includes('true')}
@@ -131,17 +171,17 @@ function Checkout() {
                     </div>
                     <div className="box">
                         <div className="col flex">
+                            <input onChange={handaleRadioChange} name='type' value='cash' id='cash' checked={input.payment_type === 'cash'} type="radio" /><label htmlFor="cash">Cash on delivery</label >
+                        </div>
+                    </div>
+                    <div className="box">
+                        <div className="col flex">
                             <input onChange={handaleRadioChange} name='type' value='bank' id='payment' checked={input.payment_type === 'bank'} type="radio" /><label htmlFor="payment" >Bank</label >
                         </div>
                         <img className="payment-img" src={PaymentImg} alt=""/>
                     </div>
                     <div className="box">
-                        <div className="col flex">
-                            <input onChange={handaleRadioChange} name='type' value='cash' id='cash' checked={input.payment_type === 'cash'} type="radio" /><label htmlFor="cash">Cash on delivery</label >
-                        </div>
-                    </div>
-                    <div className="box">
-                        <button type='submit'>Order Place</button>
+                        <button disabled={isloding} type='submit'>{isloding ? "Proccesing..." : "Order Place"}</button>
                     </div>
                 </div>
             </div>

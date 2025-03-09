@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('dob')->nullable();
             $table->string('number')->nullable();
             $table->string('bio')->nullable();
-            $table->string('avatar')->default('https://cdni.iconscout.com/illustration/premium/thumb/male-user-image-illustration-download-in-svg-png-gif-file-formats--person-picture-profile-business-pack-illustrations-6515860.png');
+            $table->string('avatar')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

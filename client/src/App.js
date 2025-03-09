@@ -17,30 +17,35 @@ import ProtectedRoute from './Route/ProtectedRoute'
 import { ToastContainer} from 'react-toastify'
 import Checkout from './Pages/Checkout/Checkout'
 import Registerpage from './Pages/Registerpage'
+import Success from './Route/Success'
+import Cancel from './Route/Cancel'
 import axios from 'axios'
-import { useAuth } from './Context/AuthContext'
+import useAuthStore from './Context/AuthStore'
 
 axios.defaults.withCredentials = true ;
 const App = () => {
-  const {token} = useAuth();
+const {Token} = useAuthStore();
+
   return (
     
     <>
       <Header/>
-      <Routes>
+      <Routes basename='/'>
         <Route path='/' element={<Home/>} />
         <Route path='/about' element={<About/>} />
         <Route path='/shop' element={<Shop/>} />
         <Route path='/service' element={<Service/>} />
         <Route path='/faq' element={<Faq/>} />
         <Route path='/contact' element={<Contact/>} />
-        <Route path='/login' element={token ? <Navigate to='/' replace /> :<Loginpage/>} />
-        <Route path='/register' element={token ?<Navigate to='/' replace /> :<Registerpage/>}></Route>
+        <Route path='/login' element={Token ? <Navigate to='/' replace/> : <Loginpage/>} />
+        <Route path='/register' element={Token ? <Navigate to='/' replace/> : <Registerpage/>}></Route>
         <Route path='/product/:id' element={<SingleProduct/>} />
         <Route path='/user/profile' element={<ProtectedRoute><Profilepage/></ProtectedRoute>} />
-        <Route path='/product/cart' element={<ProtectedRoute><Cart/></ProtectedRoute>} />
-        <Route path='/product/order' element={<ProtectedRoute><Order/></ProtectedRoute>} />
-        <Route path='/product/checkout' element={<ProtectedRoute><Checkout/></ProtectedRoute>} />
+        <Route path='/user/cart' element={<ProtectedRoute><Cart/></ProtectedRoute>} />
+        <Route path='/user/order' element={<ProtectedRoute><Order/></ProtectedRoute>} />
+        <Route path='/user/checkout' element={<ProtectedRoute><Checkout/></ProtectedRoute>} />
+        <Route path='/order/success' element={<Success/>} />
+        <Route path='/order/cancel' element={<Cancel/>} />
         <Route element={<h1>Page not Found</h1>}/>
       </Routes>
       <ToastContainer style={{ fontSize:'16px' }}/>
